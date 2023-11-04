@@ -1,0 +1,31 @@
+version: "3"
+services:
+  pgsql13:
+    image: postgres:13
+    container_name: pgsql13
+    restart: unless-stopped
+    mem_limit: 6000m
+    networks:
+      - pgsqlnet
+    volumes:
+      - ../data:/var/lib/postgresql/data/pgdata
+    # ports:
+    #   - 5432:5432/tcp
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_EXTRA_OPTS= '--schema=public --blobs'
+
+volumes:
+  db-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /opt/postgreSQL/data
+
+networks:
+  pgsqlnet:  
+    external: true
